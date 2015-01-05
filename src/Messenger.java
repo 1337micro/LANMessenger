@@ -39,7 +39,7 @@ public class Messenger {
 			
 			msg = myHostName + ":" + msg;
 			//System.out.println();
-			DatagramPacket packetMsg = new DatagramPacket(msg.getBytes(), msg.length(), group, 6790);
+			DatagramPacket packetMsg = new DatagramPacket(msg.getBytes(), msg.length(), group, 6789);
 		
 			multiSocket.send(packetMsg);
 		} catch (UnknownHostException e1) {
@@ -55,11 +55,11 @@ public class Messenger {
 		String message = null;
 		
 		 byte[] buf = new byte[1000];
-		 DatagramPacket recv = new DatagramPacket(buf, buf.length, group, 6790); // will receive the DatagramPacket
+		 DatagramPacket recv = new DatagramPacket(buf, buf.length, group, 6789); // will receive the DatagramPacket
 		 try {
 			multiSocket.receive(recv); // get the packet and store the data in recv
 			message = new String(recv.getData());
-			System.out.println(message.trim());
+			//System.out.println(message.trim());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

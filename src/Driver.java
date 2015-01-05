@@ -82,7 +82,7 @@ public class Driver {
 
 	}
 	public static void connect(){
-		messenger = new Messenger("225.5.5.5", 6790);
+		messenger = new Messenger("225.5.5.5", 6789);
 		//System.out.println("messenger port: " + messenger.getMultiSocket().getPort() + " Local port:" + messenger.getMultiSocket().getLocalPort() + " address: " + messenger.getMultiSocket().getInetAddress().getHostAddress() );
 	}
 	public static void sendJoinMessage(){
@@ -107,12 +107,17 @@ public class Driver {
 				//System.out.println(message);
 
 
-				if (message != null && ( !message.contains("has joined###!"))){
-					System.out.println(message);
+				try {
+					if (message != null && ( !message.contains("has joined###!") && !message.contains(InetAddress.getLocalHost().toString()))){
+						System.out.println(message);
 
+					}
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 
-				System.out.println(message);
+				//System.out.println(message);
 				/*
 				try {
 					if (message != null && ( message.contains("has joined###!") || message.contains((CharSequence) InetAddress.getLocalHost()))){
@@ -132,13 +137,13 @@ public class Driver {
 				} catch (UnknownHostException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
+				}*/
 				try {
 					Thread.sleep(95 );
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
 
 			}
 		}
