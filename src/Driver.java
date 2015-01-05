@@ -7,12 +7,12 @@ import java.util.Scanner;
 public class Driver {
 	volatile static ArrayList<String> connectedHostNames = new ArrayList<>(10);//all the people connected; excluding this client
 
-	Messenger messenger;
-	InetAddress myIP;
+	static Messenger messenger;
+	static InetAddress myIP;
 	
 	public static void main(String[] args) {
-		final Driver main = new Driver();
-		main.connect(); // Connect to the Multicast Socket
+		Driver main = new Driver();
+		connect(); // Connect to the Multicast Socket
 		
 		
 		//new Thread(main.new ReceiveMessages()).start(); //Start the receive message thread
@@ -27,92 +27,105 @@ public class Driver {
 			@Override
 			public void run() {
 				while(true){
-					main.joinListener();
+					joinListener();
 				}
 				
 			}
 			
 		}).start();
 		
-		while (true){
-			main.sendJoinMessage();
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		new Thread(
+				new Runnable(){
+					public void run() {						
+							sendJoinMessage();
+							
+							
+						
+					}
+				}).start();
+		
+		new Thread(main.new ReceiveMessages()).start();
+		
+		mainLoop();
 		
 	}
 	//Listen for broadcast messages sent by people who have joined, and adds that user to connectedHostNames
 	//Return the member who joined
-	public  String joinListener(){	
-		String message = messenger.recieveMessage();
-		System.out.println(message);
-		int endOfHostName = message.indexOf("has joined###!");		
+	public static  String joinListener(){	
+		String message = messenger.recieveMessage().trim();		
+		int endOfHostName = message.indexOf("has joined###!");
+		//sendJoinMessage();//Send a join message to the new arrival
+		if (endOfHostName == -1)
+			return ""; // nobody has joined, this is a regular message
 		String hostName = message.substring(0 , endOfHostName);
-		System.out.println(hostName + "Has joined");
+		if(!connectedHostNames.contains(hostName)) 
+			//System.out.println(hostName + " has joined")
+			;
+		
 		addUser(hostName);
 		return hostName;
 	}
-	public void addUser(String user){
+	public static void addUser(String user){
 		connectedHostNames.add(user);
 	}
 	public void removeUser(String user){
 		connectedHostNames.remove(user);
 	}
-	/*
-	public void mainLoop(){
-		while(messenger.isConnected()){
+	
+	public static void mainLoop(){
+		while(true){
 			Scanner s = new Scanner(System.in);
 			String msg = s.nextLine();//wait for messages
 			messenger.sendMessage(msg);
+			String fuckingTrash  = s.nextLine();// contains \n
 		}
-		System.out.println("You have quit");
-	}*/
-	public void connect(){
-		messenger = new Messenger("225.5.5.5", 6789);
-		System.out.println("messenger port: " + messenger.getMultiSocket().getPort() + " Local port:" + messenger.getMultiSocket().getLocalPort() + " address: " + messenger.getMultiSocket().getInetAddress().getHostAddress() );
+		
 	}
-	public void sendJoinMessage(){
+	public static void connect(){
+		messenger = new Messenger("225.5.5.5", 6790);
+		//System.out.println("messenger port: " + messenger.getMultiSocket().getPort() + " Local port:" + messenger.getMultiSocket().getLocalPort() + " address: " + messenger.getMultiSocket().getInetAddress().getHostAddress() );
+	}
+	public static void sendJoinMessage(){
 		InetAddress myIP;
 		try {
 			myIP = InetAddress.getLocalHost();
-			messenger.sendMessage(myIP.getHostName() + "has joined###!");
+			messenger.sendMessage(myIP.getHostName() + " has joined###!");
 			//connectedHostNames.add(myIP.getHostName());
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	/*
+	
 	public class ReceiveMessages implements Runnable{
 
 		@Override
 		public void run() {	
-			while (messenger.isConnected()){
+			while (true){
 				String message = messenger.recieveMessage();
-				if (message.contains("has joined###!")){
-					int endOfHostName = message.indexOf("has joined###!");
-					
-					String hostName = message.substring(0 , endOfHostName);
-					System.out.println(hostName + "Has joined");
-					connectedHostNames.add(hostName);
-				}
-				else if(message.contains("has left###!")){
-					int  endOfHostName = message.indexOf("has left###!");
-					String hostName = message.substring(0 , endOfHostName);
-					for (String s: connectedHostNames){						
-						if (s.equals(hostName))
-							connectedHostNames.remove(s);
+				//System.out.println(message);
+				
+				try {
+					if (message != null && ( message.contains("has joined###!") || message.contains((CharSequence) InetAddress.getLocalHost()))){
+						continue;					
 					}
-				}
-				else{ // print the message;
-					System.out.println(message);
+					else if(message.contains("has left###!")){
+						int  endOfHostName = message.indexOf("has left###!");
+						String hostName = message.substring(0 , endOfHostName);
+						for (String s: connectedHostNames){						
+							if (s.equals(hostName))
+								connectedHostNames.remove(s);
+						}
+					}
+					else{ // print the message;
+						System.out.println(message);
+					}
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(95);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -120,6 +133,6 @@ public class Driver {
 			}
 		}
 		
-	}*/
+	}
 
 }

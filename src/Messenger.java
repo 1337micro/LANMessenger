@@ -17,10 +17,10 @@ public class Messenger {
 	public Messenger(String groupIP, int port){
 		try {
 			this.multiSocket = new MulticastSocket(port);
-			multiSocket.setLoopbackMode(true);
-			this.group = InetAddress.getByName(groupIP);
+			//multiSocket.setLoopbackMode(false);
+			this.group = InetAddress.getByAddress(new byte[] { (byte)225, (byte)5, (byte)5, (byte)5 });
 			System.out.println("group host name: " + group.getHostName());
-			multiSocket.connect(group, port);
+			//multiSocket.connect(group, port);
 			multiSocket.joinGroup(group);
 
 			isConnected=true;
@@ -39,7 +39,7 @@ public class Messenger {
 			
 			msg = myHostName + ":" + msg;
 			//System.out.println();
-			DatagramPacket packetMsg = new DatagramPacket(msg.getBytes(), msg.length(), group, multiSocket.getPort());
+			DatagramPacket packetMsg = new DatagramPacket(msg.getBytes(), msg.length(), group, 6789);
 		
 			multiSocket.send(packetMsg);
 		} catch (UnknownHostException e1) {
@@ -55,15 +55,16 @@ public class Messenger {
 		String message = null;
 		
 		 byte[] buf = new byte[1000];
-		 DatagramPacket recv = new DatagramPacket(buf, buf.length); // will receive the DatagramPacket
+		 DatagramPacket recv = new DatagramPacket(buf, buf.length, group, 6789); // will receive the DatagramPacket
 		 try {
 			multiSocket.receive(recv); // get the packet and store the data in recv
 			message = new String(recv.getData());
+			System.out.println(message.trim());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 return message;
+		 return message.trim();
 		 
 	}
 	
