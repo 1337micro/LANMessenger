@@ -103,8 +103,8 @@ public class Driver {
 		public void run() {	
 			while (true){
 				String message = messenger.recieveMessage();
-				//System.out.println(message);
-				
+				System.out.println(message);
+				/*
 				try {
 					if (message != null && ( message.contains("has joined###!") || message.contains((CharSequence) InetAddress.getLocalHost()))){
 						continue;					
@@ -129,10 +129,11 @@ public class Driver {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 			}
 		}
 		
 	}
 
 }
+
