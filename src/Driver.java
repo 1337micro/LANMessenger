@@ -20,17 +20,19 @@ public class Driver {
 		//main.mainLoop();
 		//String message = messenger.recieveMessage();
 		//main.addUser(main.joinListener());
+		main.joinListener();
+		/*
 		new Thread(
 		new Runnable(){
 			@Override
 			public void run() {
 				while(true){
-				main.joinListener();
+				//main.joinListener();
 				}
 				
 			}
 			
-		}).start();
+		}).start();*/
 	}
 	//Listen for broadcast messages sent by people who have joined, and adds that user to connectedHostNames
 	//Return the member who joined
