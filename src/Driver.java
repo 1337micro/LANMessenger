@@ -103,6 +103,7 @@ public class Driver {
 		public void run() {	
 			while (true){
 				String message = messenger.recieveMessage();
+
 				//System.out.println(message);
 
 
@@ -110,9 +111,39 @@ public class Driver {
 					System.out.println(message);
 
 				}
+
+				System.out.println(message);
+				/*
+				try {
+					if (message != null && ( message.contains("has joined###!") || message.contains((CharSequence) InetAddress.getLocalHost()))){
+						continue;					
+					}
+					else if(message.contains("has left###!")){
+						int  endOfHostName = message.indexOf("has left###!");
+						String hostName = message.substring(0 , endOfHostName);
+						for (String s: connectedHostNames){						
+							if (s.equals(hostName))
+								connectedHostNames.remove(s);
+						}
+					}
+					else{ // print the message;
+						System.out.println(message);
+					}
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					Thread.sleep(95);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+
 			}
 		}
 
 	}
 
 }
+
