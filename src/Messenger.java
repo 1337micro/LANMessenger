@@ -17,6 +17,7 @@ public class Messenger {
 	public Messenger(String groupIP, int port){
 		try {
 			this.multiSocket = new MulticastSocket(port);
+			multiSocket.setLoopbackMode(true);
 			this.group = InetAddress.getByName(groupIP);
 			System.out.println("group host name: " + group.getHostName());
 			multiSocket.connect(group, port);

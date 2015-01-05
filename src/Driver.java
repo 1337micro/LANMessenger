@@ -36,7 +36,14 @@ public class Driver {
 		
 		while (true){
 			main.sendJoinMessage();
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
 	}
 	//Listen for broadcast messages sent by people who have joined, and adds that user to connectedHostNames
 	//Return the member who joined
