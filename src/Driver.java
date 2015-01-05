@@ -21,7 +21,7 @@ public class Driver {
 		//String message = messenger.recieveMessage();
 		//main.addUser(main.joinListener());
 		//main.joinListener();
-		/*
+		
 		new Thread(
 		new Runnable(){
 			@Override
@@ -43,7 +43,7 @@ public class Driver {
 
 					}
 				}).start();
-		 */
+		 
 		new Thread(main.new ReceiveMessages()).start();
 
 		mainLoop();
@@ -86,7 +86,7 @@ public class Driver {
 		//System.out.println("messenger port: " + messenger.getMultiSocket().getPort() + " Local port:" + messenger.getMultiSocket().getLocalPort() + " address: " + messenger.getMultiSocket().getInetAddress().getHostAddress() );
 	}
 	public static void sendJoinMessage(){
-		InetAddress myIP;
+		myIP = null;
 		try {
 			myIP = InetAddress.getLocalHost();
 			messenger.sendMessage(myIP.getHostName() + " has joined###!");
@@ -107,15 +107,10 @@ public class Driver {
 				//System.out.println(message);
 
 
-				try {
-					if (message != null && ( !message.contains("has joined###!") && !message.contains(InetAddress.getLocalHost().toString()))){
+				System.out.println("HOSTNAME:"  + myIP.getHostName().toString());
+					if (message != null && ( !message.contains("has joined###!") && !message.contains(myIP.getHostName().toString()))){
 						System.out.println(message);
 
-					}
-				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 
 				//System.out.println(message);
 				/*
@@ -147,8 +142,11 @@ public class Driver {
 
 			}
 		}
-
+		}
 	}
-
 }
+
+	
+
+
 
