@@ -21,7 +21,7 @@ public class Driver {
 		//String message = messenger.recieveMessage();
 		//main.addUser(main.joinListener());
 		//main.joinListener();
-		
+		/*
 		new Thread(
 		new Runnable(){
 			@Override
@@ -43,7 +43,7 @@ public class Driver {
 
 					}
 				}).start();
-		 
+		 */
 		new Thread(main.new ReceiveMessages()).start();
 
 		mainLoop();
@@ -71,6 +71,7 @@ public class Driver {
 	public void removeUser(String user){
 		connectedHostNames.remove(user);
 	}
+
 
 	public static void mainLoop(){
 		while(true){
@@ -104,13 +105,10 @@ public class Driver {
 			while (true){
 				String message = messenger.recieveMessage();
 
-				//System.out.println(message);
+				System.out.println(message);
 
 
-				System.out.println("HOSTNAME:"  + myIP.getHostName().toString());
-					if (message != null && ( !message.contains("has joined###!") && !message.contains(myIP.getHostName().toString()))){
-						System.out.println(message);
-
+			
 
 				//System.out.println(message);
 				/*
@@ -144,7 +142,7 @@ public class Driver {
 		}
 		}
 	}
-}
+
 
 	
 
