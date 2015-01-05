@@ -13,26 +13,30 @@ public class Driver {
 	public static void main(String[] args) {
 		final Driver main = new Driver();
 		main.connect(); // Connect to the Multicast Socket
-		main.sendJoinMessage();
+		
 		
 		//new Thread(main.new ReceiveMessages()).start(); //Start the receive message thread
 		
 		//main.mainLoop();
 		//String message = messenger.recieveMessage();
 		//main.addUser(main.joinListener());
-		main.joinListener();
-		/*
+		//main.joinListener();
+		
 		new Thread(
 		new Runnable(){
 			@Override
 			public void run() {
 				while(true){
-				//main.joinListener();
+					main.joinListener();
 				}
 				
 			}
 			
-		}).start();*/
+		}).start();
+		
+		while (true){
+			main.sendJoinMessage();
+		}
 	}
 	//Listen for broadcast messages sent by people who have joined, and adds that user to connectedHostNames
 	//Return the member who joined
